@@ -1,0 +1,23 @@
+@mixin remove-button($size, $color) {
+	position:relative;
+	display:inline-block;
+	color:$color;
+	&::before, &::after {
+		height:4px;
+		position:absolute;
+		top:calc(50% - 1px);
+		display:block;
+		background-color:currentColor;
+		content:"";
+		transform:rotate(45deg);
+	}
+	&::after {
+		transform:rotate(-45deg);
+	}
+  	height:$size;
+	width:$size;
+	&::before, &::after {
+		width:calc(#{$size} * 0.75);
+		left:calc(#{$size} * 0.425);
+	}
+}

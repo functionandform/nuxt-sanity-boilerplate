@@ -1,0 +1,7 @@
+@mixin link {
+	color:blue;
+	
+	&:hover {
+		color:red;
+	}
+}
