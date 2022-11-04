@@ -3,9 +3,12 @@
     <container class="footer__container">
       <row class="footer__row">
         <column class="footer__column" xxs="12">
-          
+        
         </column>
       </row>
+    </container>
+    <container class="footer__container">
+      <div class="footer__caveats" id="global-caveats"></div>
     </container>
   </footer>
 </template>
@@ -22,10 +25,10 @@
       type:Boolean,
       default:false
     },
-    header: {
-      type:Object,
-      default:true
-    },
+    // header: {
+    //   type:Object,
+    //   default:true
+    // },
     minimal: {
       type:Boolean
     }
@@ -37,6 +40,8 @@
 <style lang="scss">
   .footer {
     display:block;
+    position:relative;
+    padding:vr(2) 0;
     &__container {
 
     }

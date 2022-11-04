@@ -1,14 +1,15 @@
 
-@import '~/assets/scss/_base/reset';
-@import '~/assets/scss/_base/fonts';
-@import '~/assets/scss/_base/animations';
-@import '~/assets/scss/_base/themes';
-@import '~/assets/scss/_base/header';
+@import '@/assets/scss/_base/reset';
+@import '@/assets/scss/_base/fonts';
+@import '@/assets/scss/_base/animations';
+@import '@/assets/scss/_base/themes';
+@import '@/assets/scss/_base/header';
 
-@import '~/assets/scss/_design/globals';
-@import '~/assets/scss/_design/layout';
-@import '~/assets/scss/_design/typography';
-@import '~/assets/scss/_design/common';
+@import '@/assets/scss/_design/globals';
+@import '@/assets/scss/_design/layout';
+@import '@/assets/scss/_design/typography';
+@import '@/assets/scss/_design/blockquote';
+@import '@/assets/scss/_design/common';
 
-@import '~/assets/scss/_overrides';
+@import '@/assets/scss/_overrides';
 

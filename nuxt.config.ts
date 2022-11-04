@@ -1,9 +1,9 @@
 
 export default defineNuxtConfig({
-	modules: ["@nuxtjs/sanity",'nuxt-jsonld','@pinia/nuxt'],
+	modules: ["@nuxtjs/sanity",'nuxt-jsonld','@pinia/nuxt','@nuxt/image-edge'],
 	sanity: {
-		projectId: "2cs5rz6l",
-		apiVersion: '2022-03-25',
+		projectId: "say5yn59",
+		apiVersion: '2022-10-14',
 		useCdn:false,
 		dataset:process.env.SANITY_DATASET
 	},
@@ -13,8 +13,28 @@ export default defineNuxtConfig({
 		},
 	},
 	publicRuntimeConfig:{
-		siteName:process.env.SITE_NAME,
+		siteName:'Cool Planet',
 		baseUrl:process.env.BASE_URL
+	},
+	target: 'static',
+	image: {
+  		// Options
+  		sanity: {
+			projectId: 'say5yn59',
+			dataset: 'production'
+		},
+  		screens:{
+  			xxs:320,
+			xs: 359,
+			sm: 640,
+			md:768,
+			lg: 1024,
+			xl: 1280,
+			xxl:1536,
+			xxxl:1920,
+			quadHd:2400,
+			'4k':3700,
+  		}
 	},
 	css:[
 		"@/assets/scss/main.scss"

@@ -1,18 +1,19 @@
 <template>
 	<transition name="cookie-consent-transition">
-		<div :class="'cookie-consent cookie-consent--'+position" v-if="show">
-			<div class="cookie-consent__dialogue">
-				<img src="~assets/images/other/cookie.png" alt="Cookies" title="Cookies" width="200" height="198" class="cookie-consent__cookie">
-				<div>
-					<p class="small"><strong>Cookies help us improve your experience on our website.</strong> Is this okay? For more information, see our <a :href="config.baseUrl+privacyPolicyPath" target="_blank" class="nowrap">cookies notice</a></p>
-				</div>
-				<div>
-					<v-button weight="primary" @click.native="acceptCookieConsent">Sure, I love cookies</v-button>
-					<v-button v-if="declineAllowed" weight="tertiary" @click.native="declineCookieConsent">No cookies for me</v-button>
+			<div :class="'cookie-consent cookie-consent--'+position+' cookie-consent--'+display" v-if="show">
+				<div class="cookie-consent__bg"></div>
+				<div class="cookie-consent__dialogue align-left">
+					<!-- <img src="~assets/images/other/cookie.png" alt="Cookies" title="Cookies" with="200" height="198" class="cookie-consent__cookie"> -->
+					<div class="cookie-consent__message">
+						<p class="no-margin"><strong>Cookies improve your experience on our website.</strong></p><p class="small no-margin">Are you okay with this? Find out more <nuxt-link to="/legal/privacy-policy">here</nuxt-link>.</p>
+					</div>
+					<div class="cookie-consent__action">
+						<v-button class="no-margin" weight="primary" @click.native="acceptCookieConsent" leading-icon="cookie">Okay</v-button>
+						<v-button class="no-margin" v-if="declineAllowed" weight="tertiary" @click.native="declineCookieConsent">No cookies for me</v-button>
+					</div>
 				</div>
 			</div>
-		</div>
-	</transition>
+		</transition>
 
 </template>
 
@@ -76,33 +77,48 @@
 </script>
 
 <style lang="scss">
-	.cookie-consent {
+		.cookie-consent {
 		position:fixed;
-		z-index: 200;
+		z-index: 3000;
 		bottom:0;
 		left:0;
 		width:100%;
 		height:100%;
 		display:flex;
-		align-items: center;
+		align-items: flex-end;
 		justify-content: center;
 		pointer-events:none;
 		&__bg {
-			display:block;
+			display:none;
 			position:absolute;
 			top:0; left:0; width:100%; height:100%;
 			background-color:rgba(0,0,0,0.5);
 			pointer-events:none;
+
+			// @include breakpoint(lg) {
+			// 	background-color:transparent;
+			// }
 		}
 		&__dialogue {
 			position:relative;
-			background-color:white;
-			text-align:center;
-			padding:vr(1) vr(1) 0 vr(1);
+			min-height:vr(2.5);
+			
+			padding:vr(0.25) vr(0.25);
 			margin:vr(1);
-			max-width:300px;
 			pointer-events:all;
+			background-color: var(--bg);
+			display:flex;
+			align-items:stretch;
 
+		}
+		&__message {
+			flex:0 1 100%;
+			margin:vr(0.25);
+		}
+		&__action {
+			flex:0 0 auto;
+			margin:vr(0.25);
+			align-self:stretch;
 		}
 		&__cookie {
 			margin:0 auto vr(1) auto;
@@ -133,17 +149,32 @@
 				justify-content: flex-end;
 			}
 		}
+		&--stacked {
+
+		}
+		&--inline {
+			.cookie-consent {
+				&__dialogue {
+					@include breakpoint(lg) {
+						display:flex;
+						align-items: center;
+						max-width:800px;
+						text-align:left;
+					}
+				}
+			}
+		}
 	}
 
-	.cookie-consent-transition-enter-active {
-		transition:all 0.5s $ease-in-out-expo;
-		.cookie-consent__bg {
-			transition:0.5s $ease-in-out-expo;
-		}
-		.cookie-consent__dialogue {
-			transition:0.2s $elastic 0.2s;
-		}
-	}
+	// .cookie-consent-transition-enter-active {
+	// 	transition:all 0.5s $ease-in-out-expo;
+	// 	.cookie-consent__bg {
+	// 		transition:0.5s $ease-in-out-expo;
+	// 	}
+	// 	.cookie-consent__dialogue {
+	// 		transition:0.2s $elastic 0.2s;
+	// 	}
+	// }
 
 	.cookie-consent-transition-leave-active {
 		transition:all 0.5s $ease-in-out-expo;
@@ -155,7 +186,7 @@
 		}
 	}
 
-	.cookie-consent-transition-enter, .cookie-consent-transition-leave-to {
+	.cookie-consent-transition-leave-to {
 		.cookie-consent__bg {
 			opacity:0;
 		}

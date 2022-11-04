@@ -101,7 +101,7 @@
 			"image":{
 				"@type":"ImageObject",
 				"height":"248",
-				"url":"https://cdn.thewriter.com/branding/company-logo.png",
+				"url":"/",
 				"width":"600"
 			},
 			// "logo":{
@@ -149,7 +149,7 @@
 		{
 			"@context":"http://schema.org","@type":"BreadcrumbList","description":"Breadcrumbs list","itemListElement":[
 			{
-				"@type":"ListItem","item":"https://www.thewriter.com","name":"Writing | Training | Naming | Tone of voice","position":1
+				"@type":"ListItem","item":"https://www.domain.com","name":"Page title","position":1
 			}
 				],
 				"name":"Breadcrumbs"

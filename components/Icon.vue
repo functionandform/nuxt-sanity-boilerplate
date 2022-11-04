@@ -1,56 +1,47 @@
 <template>
-	<svg :class="'icon '+addClass+' icon--'+size"><use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="'/iconography/icons.svg'+'#icon-'+ name"></use></svg>
+	<svg :class="'icon '+addClass+' icon--'+size"><use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="iconHref"></use></svg>
 </template>
 
 
-<script>
-	export default {
-		props: {
-			name: {
-				required:true,
-				type:String
-			},
-			addClass: {
-				required:false,
-				type:String,
-				default:''
-			},
-			size: {
-				required:false,
-				type:String,
-				default:'regular'
-			}
+<script setup>
+	import icons from '~/assets/iconography/icons.svg';
+	const props = defineProps({
+		name: {
+			required:true,
+			type:String
 		},
-		methods: {
-			
+		addClass: {
+			required:false,
+			type:String,
+			default:''
+		},
+		size: {
+			required:false,
+			type:String,
+			default:'regular'
 		}
-	}
-	
+	});
+
+	const iconHref = computed(() => {
+		return icons+'#icon-'+ props.name
+	})
 </script>
 
 
 <style lang="scss">
-
-
-	/* Generated using nucleoapp.com */
-	/* --------------------------------
-
-	Icon colors
-
-	-------------------------------- */
 
 	.icon {
 	  display: inline-block;
 	  /* icon primary color */
 	  color: black;
 	  height:1em; width:1em;
-	  stroke-width:2px;
+	  stroke-width:1px;
 	  vertical-align: middle;
 	}
 
 	.icon use {
 	  /* icon secondary color - fill */
-	  fill: inherit;
+	  fill: currentColor;
 	  stroke:currentColor;
 	}
 
@@ -68,7 +59,7 @@
 
 	.icon.icon--duo use {
 	  /* icon secondary color - stroke */
-	  stroke: red;
+	  stroke: currentColor;
 	}
 	/* --------------------------------
 

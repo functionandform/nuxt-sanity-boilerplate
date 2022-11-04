@@ -8,6 +8,12 @@
 export default {
   props: {
     reverse: { type: Boolean, default: false },
+    reverseXs: { type: Boolean, default: false },
+    reverseSm: { type: Boolean, default: false },
+    reverseMd: { type: Boolean, default: false },
+    reverseLg: { type: Boolean, default: false },
+    reverseXl: { type: Boolean, default: false },
+    reverseXxl: { type: Boolean, default: false },
     startXs: { type: Boolean, default: false },
     centerXs: { type: Boolean, default: false },
     endXs: { type: Boolean, default: false },
@@ -60,6 +66,12 @@ export default {
       c += this.aroundLg ? ' around-lg' : (this.betweenLg ? ' between-lg' : '')
       c += this.steppedUp ? ' stepped-up' : ''
       c += this.steppedDown ? ' stepped-down' : ''
+      c += this.reverseXs ? '  reverse-xs' : ''
+      c += this.reverseSm ? ' reverse-sm' : ''
+      c += this.reverseMd ? ' reverse-md' : ''
+      c += this.reverseLg ? ' reverse-lg' : ''
+      c += this.reverseXl ? ' reverse-xl' : ''
+      c += this.reverseXxl ? ' reverse-xxl' : ''
       return c
     }
   }
@@ -674,8 +686,21 @@ export default {
     -ms-flex-order: 1;
     order: 1;
   }
-
+  @include breakpoint(xs) {
+    .row.reverse-xs {
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+      flex-direction: row-reverse;
+    }
+  }
   @include breakpoint(sm) {
+    .row.reverse-sm {
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+      flex-direction: row-reverse;
+    }
 
     .start-sm {
       -webkit-box-pack: start;
@@ -741,6 +766,14 @@ export default {
   }
 
   @include breakpoint(md) {
+    .row.reverse-md {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+  }
+
+
     .start-md {
       -webkit-box-pack: start;
       -ms-flex-pack: start;
@@ -805,6 +838,12 @@ export default {
   }
 
   @include breakpoint(lg) {
+    .row.reverse-lg {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+  }
 
     .start-lg {
       -webkit-box-pack: start;
@@ -870,6 +909,12 @@ export default {
   }
 
   @include breakpoint(xl) {
+    .row.reverse-xl {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+  }
 
     .start-xl {
       -webkit-box-pack: start;
@@ -935,6 +980,12 @@ export default {
   }
 
   @include breakpoint(xxl) {
+    .row.reverse-xxl {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+  }
 
     .start-xxl {
       -webkit-box-pack: start;

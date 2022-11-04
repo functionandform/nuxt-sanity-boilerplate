@@ -2,37 +2,33 @@
   <component :is="getComponentType"
     :type="type ? type : getComponentType === 'button' ? 'button' : null"
     :to="to"
-    :href="url ? url : to ? to : null"
+    :href="url"
     :exact="to && exact ? exact : null"
     :class="[
-      'button button--loading button--' + weight + ' ' + addClass + ' ' + applyInvertClass + ' button--loading-' + loading, {'button--small':small, 'button--active':active}]"
+      'button button--' + weight + ' ' + addClass+' ', {'button--small':small, 'button--active':active}]"
     ref="button"
     :active-class="activeClass"
-  >
-    <div class="button__fill"></div>
-    <div class="button__doodle"></div>
-
-    <div class="button__loading-icon" v-if="loading"><span></span><span></span><span></span></div><div class="button__icon button__icon--leading" v-if="leadingIcon"><icon :name="leadingIcon" size="normal"></icon></div><span class="button__label" ref="label"><slot></slot></span><span class="button__meta" v-if="meta || typeof meta == 'number'">&nbsp;{{meta}}</span><div class="button__icon button__icon--trailing" v-if="trailingIcon"><icon :name="trailingIcon" size="normal"></icon></div>
-    <div class="button__click-handler" @click="onClick()"></div>
-  </component>
+  ><div class="button__fill"></div><div class="button__icon-fill"></div><div class="button__loading-icon" v-if="loading"><span></span><span></span><span></span></div><div class="button__icon button__icon--leading" v-if="leadingIcon"><icon :name="leadingIcon" size="normal"></icon></div><span class="button__label" ref="label"><slot/></span><span class="button__meta" v-if="meta || typeof meta == 'number'">&nbsp;{{meta}}</span><div class="button__icon button__icon--trailing" v-if="trailingIcon"><icon :name="trailingIcon" size="normal"></icon></div><div class="button__click-handler" @click="onClick(e)"></div></component>
 </template>
 
-<script>
+<script setup>
+  import { ref, computed, useSlots } from 'vue';
+  const slots = useSlots();
+  const route = useRoute();
+  const button = ref(null);
+  const label = ref(null);
 
-  
-
-export default {
-  props: {
+  const props = defineProps({
     weight: {
       required: false,
       type: String,
       default:'tertiary'
     },
     trailingIcon: {
-      required:false
+      default:false
     },
     leadingIcon: {
-      default:false
+      default:'arrow-right'
     },
     activeClass:{
       type:String
@@ -86,71 +82,43 @@ export default {
       type:Boolean,
       default:true
     }
-  },
-  computed: {
-    applyInvertClass() {
-      if (this.invert) {
-        return 'button--invert';
-      } else {
-        return null;
-      }
-    },
-    applyLoadingClass() {
-      if (this.loading) {
-        return 'button--loading';
-      } else {
-        return null;
-      }
-    },
-    getComponentType() {
-      if (this.to) {
-        return 'nuxt-link'
-      } else if (this.url) {
-        return 'a'
-      } else {
-        return 'button'
-      }
-    },
-  },
-  methods: {
-    
-    applyWeightClass() {
-      return `button--$(this.weight)`;
-    },
-    onClick() {
-      const ctx = this;
-      const label = this.$refs.label ? this.$refs.label.innerHTML.replace(/<[^>]*>?/gm, '') : null;
-      if (this.dataLayerEnabled && this.type !== 'radio' && this.type !== 'checkbox') {
-        let baseVariables = {
-          event:this.event,
-          ctaWeight:ctx.weight,
-          locationPath:ctx.$route.fullPath,
-          ctaLabel:label
-        }
-        if (ctx.action && ctx.action.length) {
-          baseVariables.action = ctx.action
-        } else if (ctx.to && ctx.to.length && ctx.to.startsWith('/forms/')) {
-          const slug = ctx.to.split("/").pop();
-          //baseVariables.event = 'formAction';
-          baseVariables.action = 'viewForm';
-          baseVariables.form = slug;
-        }
-        if (ctx.to && ctx.to.length) {
-          baseVariables.destinationPath = ctx.to
-        } else if (ctx.url && ctx.url.length) {
-          baseVariables.externalUrl = ctx.url
-        }
-        if (ctx.location && ctx.location.length) {
-          baseVariables.location = ctx.location
-        }
-        if (ctx.dataLayerVariables) {
-          baseVariables = {...baseVariables, ...ctx.dataLayerVariables}
-        }
-        ctx.pushDataLayer(baseVariables);
-      }
-    },
-  },
-};
+  });
+
+  const labelHtml = computed(() => {
+    const labelSlot = slots.default();
+    const label = labelSlot[0]?.children;
+    console.log(label);
+    const chars = label.split('');
+    return '<span>'+ chars.join('</span><span>') + '</span>';
+  });
+
+  const applyInvertClass = computed(() => {
+    if (props.invert) {
+      return 'button--invert';
+    } else {
+      return null;
+    }
+  });
+  const applyLoadingClass = computed(() => {
+    if (props.loading) {
+      return 'button--loading';
+    } else {
+      return null;
+    }
+  });
+  const getComponentType = computed(() => {
+    if (props.to) {
+      return resolveComponent('NuxtLink')
+    } else if (props.url) {
+      return 'a'
+    } else {
+      return 'button'
+    }
+  });
+
+  function applyWeightClass() {
+    return `button--${props.weight}`;
+  };
 </script>
 
 
@@ -164,6 +132,7 @@ export default {
   background-color:transparent;
   border:none;
   border-radius:0px;
+  padding:0;
   position:relative;
   white-space:nowrap;
   display: inline-table;
@@ -172,10 +141,8 @@ export default {
   height:vr(1);
   min-height:vr(1);
   font-size:1rem;
-  color:black;
-  letter-spacing:0.015em;
-  color:black;
-  font-weight:600;
+  letter-spacing: 0.015em;
+  cursor:pointer;
   &__click-handler {
     position:absolute;
     top:0; left:0;
@@ -187,57 +154,53 @@ export default {
     position:relative;
     display:table-cell;
     vertical-align: middle;
-    height:100%;
     pointer-events:none;
   }
   &__label {
     transition:0.2s $ease-in-out-expo;
+    z-index: 1;
+    color:currentColor;
   }
   &__meta {
-    color:black;
+    color:currentColor;
     font-size:0.8em;
-    font-weight:400;
     
   }
   &__icon {
-    height:auto;
     position:relative;
-    margin:0 vr(0.25);
     .icon {
       display:block;
-      color:black;
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
       transition:0.2s $ease-in-out-expo;
     }
-    
   }
   &__fill {
     pointer-events:none;
     background-color: transparent;
-    height:100%; width:100%;
+    width:100%;
+    height:vr(1);
     position:absolute;
     top:50%; left:0;
+    transform-origin:center left;
     max-height:100%;
     transform:translateY(-50%);
   }
-  &--tertiary {
-    font-size:0.8rem;
-    &:focus {
-      outline:none;
-    }
-  }
-  &--primary, &--category {
+  &--primary, &--category, &--secondary {
     text-align:center;
     background-color:transparent;
+    height:vr(2);
+    max-height:vr(2);
     .button {
-      &__icon, &__label {
-        margin:0 vr(0.25);
-      }
+     &__icon {
+      height:2rem; width:2rem;
+     }
+     &__icon-fill {
+      height:2rem; max-width:2rem;
+     }
       &__label {
-        color:white;
-
-      }
-      &__fill {
-        background-color: black;
+        margin:0 1rem;
       }
     }
     .icon {
@@ -250,38 +213,12 @@ export default {
       }
     }
   }
-  &--primary {
-    padding:0 vr(0.75);
-    height:vr(2);
-    max-height:vr(2);
-  }
-  &--category {
-    padding:0 vr(0.5);
-    height:vr(1);
-    max-height:vr(1);
-    .button__label {
-      font-size:0.8rem;
-    }
-  }
-  
   &--disabled, &:disabled {
     pointer-events:none;
     cursor:not-allowed;
   }
   &--invert {
-    &.button--primary, &.button--category {
-      .button__fill {
-        background-color: white;
-      }
-      .button__label {
-        color:black;
-      }
-    }
-    &.button--secondary, &.button--tertiary {
-      .button__label {
-        color:white;
-      }
-    }
+
   }
   &--small {
     &.button--primary {
@@ -293,10 +230,11 @@ export default {
 }
 
 a:hover, .button:hover, .button.button--active {
-  .button__doodle {
-      opacity:1;
-      transition:0.1s $ease-in-circ;
-    }
+  
+}
+
+.button.no-margin {
+  margin-bottom:0;
 }
 
 

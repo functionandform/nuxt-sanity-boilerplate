@@ -8,6 +8,7 @@
 export default {
   props: {
     firstXxs: { type: Boolean, default: false },
+    lastXxs: { type: Boolean, default: false },
     firstXs: { type: Boolean, default: false },
     lastXs: { type: Boolean, default: false },
     firstSm: { type: Boolean, default: false },
@@ -16,8 +17,10 @@ export default {
     lastMd: { type: Boolean, default: false },
     firstLg: { type: Boolean, default: false },
     lastLg: { type: Boolean, default: false },
-    lastxl: { type: Boolean, default: false },
-    lastxxl: { type: Boolean, default: false },
+    firstXl: { type: Boolean, default: false },
+    lastXl: { type: Boolean, default: false },
+    firstXxl: { type: Boolean, default: false },
+    lastXxl: { type: Boolean, default: false },
     xxsOffset: { type: String, validator (v) { var i = parseInt(v); return !isNaN(i) && v >= 0 && v < 13 } },
     xsOffset: { type: String, validator (v) { var i = parseInt(v); return !isNaN(i) && v >= 0 && v < 13 } },
     smOffset: { type: String, validator (v) { var i = parseInt(v); return !isNaN(i) && v >= 0 && v < 13 } },

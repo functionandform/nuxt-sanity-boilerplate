@@ -6,6 +6,7 @@
 
 body, html {
 	@include line-height(1);
+	font-family:$body-font-family;
 }
 
 * {
@@ -36,10 +37,7 @@ body, html {
 html {
 	font-size:16px;
 	@include breakpoint(md) {
-		font-size:18px;
-	}
-	@include breakpoint(xl) {
-		font-size:20px;
+		font-size:17px;
 	}
 }
 
@@ -118,12 +116,8 @@ p, ul, ol, h1, h2, h3, h4, h5, h6 {
 	}
 }
 
-h6 {
-	font-size:1rem;
-	margin-bottom:vr(1);
-	@include breakpoint(lg) {
-		font-size:0.8rem;
-	}
+h1,h2,h3,h4,h5, .h1,.h2,.h3,.h4,.h5 {
+	font-family:$title-font-family;
 }
 
 h5, .h5 {
@@ -134,15 +128,19 @@ h5, .h5 {
 	}
 }
 
-h4 {
-	margin-bottom:vr(1);
-	font-size:1.1rem;
-	@include breakpoint(xl) {
-		font-size:1.1rem;
+h4, .h4 {
+	font-size:1rem;
+
+	&.tag {
+		margin-bottom:vr(1);
+		border-radius:$radius-md;
+		padding:0 1em;
+		background-color:var(--bg);
+		display:inline-block;
 	}
 }
 
-h3 {
+h3, .h3 {
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
 	font-size:1.8rem;
@@ -153,7 +151,7 @@ h3 {
 }
 
 
-h2 {
+h2:not(.h1), .h2 {
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
 	font-size:2.4rem;
@@ -169,7 +167,7 @@ h2 {
 }
 
 
-h1 {
+h1:not(.h4), .h1 {
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
 	font-size: 2.5rem;
@@ -202,5 +200,100 @@ sub {
 
 
 
+
+ol,ul {
+	list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: list;
+  margin-bottom:vr(1);
+  display:block;
+  li {
+    padding-left:vr(1.25);
+    line-height:vr(1);
+    position:relative;
+    counter-increment: list;
+    margin-bottom:vr(0.5);
+    &::before {
+      position:absolute;
+      transform: rotate3d(0,0,0,0);
+      height:vr(1);
+      width:vr(1);
+      left:0;
+      top:0;
+      content:"";
+      color:$pink;
+      color:var(--accent);
+    }
+	  &.footnotes {
+	  	li::before {
+	  		color:var(--primary);
+	  	}
+	  }
+	}
+	&.inline {
+		display:flex;
+		flex-wrap:wrap;
+		li {
+			flex:0 0 auto;
+			display:inline-block;
+			margin-right:vr(1);
+		}
+	}
+}
+	
+ol li {
+	 
+  &::before {
+    content:counter(list)' ';
+    letter-spacing: 0.2em;
+    font-weight:600;
+  }
+}
+
+  
+ul li {
+  &::before {
+    content:'• ';
+    letter-spacing: 0.2em;
+    font-weight:600;
+  }
+}
+
+
+.block {
+	display:block;
+}
+
+.feature-text, ul.features {
+  li {
+  	
+  	transform:translate3d(0,0,0);
+  	position:relative;
+    &::before {
+    	transform:translate3d(0,0,0);
+      background-size:1rem;
+      background-repeat:no-repeat;
+      background-position:center;
+      background-color:var(--secondary);
+      display:inline-block;
+      content:'';
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' width='24' viewBox='0 0 24 24'%3E%3Cg stroke-linecap='square' stroke-width='2' fill='none' stroke='black' stroke-linejoin='miter' class='nc-icon-wrapper' stroke-miterlimit='10'%3E%3Cpolyline points='6,12 10,16 18,8 '%3E%3C/polyline%3E%3C/g%3E%3C/svg%3E") center center no-repeat;
+    }
+    &::after {
+    	display:block;
+    	clear:both;
+    	content:" ";
+    }
+  }
+}
+
+.primary-color {
+	color:var(--primary);
+}
+
+.secondary-color {
+	color:var(--secondary);
+}
 
 
