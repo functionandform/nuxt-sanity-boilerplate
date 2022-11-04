@@ -2,8 +2,7 @@
   <div>
     <loading v-if="pending"/>
     <template v-else-if="entry">
-     <hero-builder :entry="entry"/>
-     <builder-landing-page :entry="entry"/>
+     <h1>Homepage</h1>
     </template>
   </div>
 </template>
