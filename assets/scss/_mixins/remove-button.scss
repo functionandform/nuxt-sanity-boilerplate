@@ -3,7 +3,7 @@
 	display:inline-block;
 	color:$color;
 	&::before, &::after {
-		height:4px;
+		height:2px;
 		position:absolute;
 		top:calc(50% - 1px);
 		display:block;

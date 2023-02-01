@@ -60,6 +60,80 @@ export default {
   }
 }
 .container {
+  &.overflow-scroll-less-than-xl {
+      @include breakpoint-less-than(xl) {
+        overflow:hidden;
+        padding:0;
+        & > .row {
+          width:100%;
+          margin:0;
+          flex-wrap:nowrap;
+          scroll-snap-type:x mandatory;
+          overflow:hidden;
+          overflow-x:scroll;
+          & > div[class^='col-'], & > div[class*=' col-'] { 
+            scroll-snap-align:start;
+            transform:none !important;
+            flex:0 0 auto;
+            margin-right:0;
+            padding-right:0;
+            padding-left:vr(1);
+            &:last-child {
+              margin-right:vr(1);
+            }
+          }
+          & > .col-xxs-1 {
+            flex-basis: 8.33333333vw;
+            max-width: 8.33333333vw;
+          }
+          & > .col-xxs-2 {
+            flex-basis: 16.66666667vw;
+            max-width: 16.66666667vw;
+          }
+          & > .col-xxs-3 {
+            -ms-flex-preferred-size: 25vw;
+            flex-basis: 25vw;
+            max-width: 25vw;
+          }
+          & > .col-xxs-4 {
+            flex-basis: 33.33333333vw;
+            max-width: 33.33333333vw;
+          }
+          & > .col-xxs-5 {
+            flex-basis: 41.66666667vw;
+            max-width: 41.66666667vw;
+          }
+          & > .col-xxs-6 {
+            flex-basis: 50vw;
+            max-width: 50vw;
+          }
+          & > .col-xxs-7 {
+            flex-basis: 58.33333333vw;
+            max-width: 58.33333333vw;
+          }
+          & > .col-xxs-8 {
+            flex-basis: 66.66666667vw;
+            max-width: 66.66666667vw;
+          }
+          & > .col-xxs-9 {
+            flex-basis: 75vw;
+            max-width: 75vw;
+          }
+          & > .col-xxs-10 {
+            flex-basis: 83.33333333vw;
+            max-width: 83.33333333vw;
+          }
+          & > .col-xxs-11 {
+            flex-basis: 91.66666667vw;
+            max-width: 91.66666667vw;
+          }
+          & > .col-xxs-12 {
+            flex-basis: 100vw;
+            max-width: 100vw;
+          }
+        }
+      }
+    }
   &.overflow-scroll-less-than-lg {
       @include breakpoint-less-than(lg) {
         overflow:hidden;

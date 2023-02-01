@@ -1,3 +1,27 @@
 :root {
-	
+	--bgSoft:#{$blue-light};
+	--bg:#{$white};
+	--bgContrast:#{$blue-dark};
+
+	--contrast:#{$black};
+	--contrastAlt:#{$white};
+
+	--primary:#{$purple};
+	--secondary:#{$pink};
+	--primarySoft:#{$purple-light};
+	--secondarySoft:#{$pink-light};
+}
+
+[data-theme="dark"] {
+	--bgSoft:#{$blue-x-dark};
+	--bg:#{$blue-dark};
+	--bgContrast:#{$blue};
+
+	--contrast:#{$white};
+	--contrastAlt:#{$white};
+
+	--primary:#{$purple};
+	--secondary:#{$pink};
+	--primarySoft:#{$purple-light};
+	--secondarySoft:#{$pink-light};
 }

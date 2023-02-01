@@ -5,7 +5,7 @@
 				<div class="cookie-consent__dialogue align-left">
 					<!-- <img src="~assets/images/other/cookie.png" alt="Cookies" title="Cookies" with="200" height="198" class="cookie-consent__cookie"> -->
 					<div class="cookie-consent__message">
-						<p class="no-margin"><strong>Cookies improve your experience on our website.</strong></p><p class="small no-margin">Are you okay with this? Find out more <nuxt-link to="/legal/privacy-policy">here</nuxt-link>.</p>
+						<p class="no-margin"><strong>Cookies improve your experience on our website.</strong></p><p class="small no-margin">Are you okay with this? <nuxt-link to="/legal/privacy-policy">Privacy policy</nuxt-link>.</p>
 					</div>
 					<div class="cookie-consent__action">
 						<v-button class="no-margin" weight="primary" @click.native="acceptCookieConsent" leading-icon="cookie">Okay</v-button>
@@ -55,9 +55,30 @@
 		show.value = true;
 	};
 	function allowTracking() {
+		let scripts = [];
+	    let noscripts = [];
+	    if (config.public.gtmId) {
+	      scripts.push({
+	        hid:'gtm',
+	        children:`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	          })(window,document,'script','dataLayer','${config.public.gtmId}');`,
+	        type: 'text/javascript'
+	      });
+	      noscripts.push({
+	        children:`<iframe src="https://www.googletagmanager.com/ns.html?id=${config.public.gtmId}"
+	      height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+	      	body:true
+	      });
+	      useHead({
+			script:scripts,
+			noscript:noscripts
+		  });
+	      console.info('GTM is now enabled');
+	    }
 
-		// for this to work, you must have nuxt-community/gtm-module installed but with autoInit set to false in nuxt.config https://github.com/nuxt-community/gtm-module
-		//this.$gtm.init();
 	};
 
 	onMounted(() => {

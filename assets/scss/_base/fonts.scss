@@ -1,11 +1,26 @@
 /* HEADLINES */
 
-// @font-face {
-//     font-display:swap;
-//     font-family: 'Styrene';
-//     src: url('~/assets/fonts/styrene/medium.woff2') format('woff2'),
-//          url('~/assets/fonts/styrene/medium.woff') format('woff');
-//     font-weight: 700;
-//     font-style: normal;
-// }
+@font-face {
+    font-display:swap;
+    font-family: 'Styrene';
+    src: url('~/assets/fonts/styrene/medium.woff2') format('woff2'),
+         url('~/assets/fonts/styrene/medium.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
 
+@font-face {
+    font-display:swap;
+    font-family: 'Untitled';
+    src: url('~/assets/fonts/untitled/light.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-display:swap;
+    font-family: 'Untitled';
+    src: url('~/assets/fonts/untitled/regular.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}

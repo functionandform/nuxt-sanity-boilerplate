@@ -1,44 +1,32 @@
 <template>
-  <div>
-    <loading v-if="pending"/>
+  <div class="index">
+    <loading v-if="pending" />
     <template v-else-if="entry">
-     <h1>Homepage</h1>
+
     </template>
   </div>
 </template>
 
-
 <script setup>
-  import groqQuery from '~/queries/groq/home-page';
-  const config = useRuntimeConfig();
-  const route = useRoute();
-  const query = groqQuery();
+import { entryMeta } from "~/helpers";
+import groqQuery from "~/queries/groq/home-page";
+const config = useRuntimeConfig();
+const query = groqQuery();
 
-  const { pending, data:entry, error } = useSanityQuery(query);
-  console.log({pending: pending.value, error:error.value, entry:entry.value});
-  if (error && error.value) {
-    throw createError({statusCode:500})
-  } else if (entry) {
-    useHead({
-      title:entry.value?.meta?.title,
-      meta: [
-        {name:'description', content:entry.value?.meta?.description},
-        {name:'robots', content:entry.value?.meta?.robots?.length ? entry.value?.meta?.robots : 'all'},
-        {property:'og:title', content:entry.value?.meta?.title?.length ? entry.value?.meta?.title : entry.value?.title},
-        {name:'twitter:title', content:entry.value?.meta?.title?.length ? entry.value?.meta?.title : entry.value?.title},
-        {name:'twitter:description', content:entry.value?.meta?.description},
-        // {property:'og:image',content:ogImage},
-        // {property:'og:image:width',content:'1200'},
-        // {property:'og:image:height',content:'600'},
-        // {name:'twitter:image',content:ogImage},
-        // {property:'twitter:image:width',content:'1200'},
-        // {property:'twitter:image:height',content:'600'}
-      ],
-      link: [
-        {rel:'canonical',href:'/'}
-      ]
-    })
-   } else {
-      console.error('Unknown error occured')
-    }
+const sanity = useSanity();
+const {
+  pending,
+  data: entry,
+  error,
+} = await useLazyAsyncData("index", () => sanity.fetch(query));
+if (error?.value) {
+  throw createError({ statusCode: 500 });
+} else if (entry?.value) {
+  const meta = entryMeta(entry.value);
+  useHead({
+    title: entry.value?.meta?.title,
+    meta: meta,
+    link: [{ rel: "canonical", href: `${config.public.baseUrl}` }],
+  });
+}
 </script>

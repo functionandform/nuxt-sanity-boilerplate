@@ -1,7 +1,50 @@
-@mixin link {
-	color:blue;
-	
-	&:hover {
-		color:red;
+@mixin link($invert:false) {
+	text-decoration: none;
+	color:inherit;
+	transition:background-size 0.3s $ease-out-expo;
+	background-repeat: no-repeat;
+	transform-origin:bottom left;
+	background-image: linear-gradient(transparent calc(100% - 1px), currentColor 1px);
+	@if $invert == true {
+		background-position: 100% 100%;
+	    background-size: 0% 100%;
+	    // transform-origin:bottom right;
+		&:hover {
+			background-position: 0% 100%;
+			background-size: 100% 100%;
+			transition:background-size 0.3s $ease-in-out-circ;
+			// transform-origin:bottom right;
+		}
 	}
+	@else {
+		background-position: 0% 0%;
+	    background-size: 100% 100%;
+		&:hover {
+			animation:0.5s underline $ease-in-out-circ;
+		}
+	}
+}
+
+
+@keyframes underline {
+	0% {
+		background-position: 100% 0%;
+		background-size: 100% 100%;
+	}
+	50% {
+		background-position: 100% 0%;
+		background-size: 0% 100%;
+	}
+	51% {
+		background-position: 0% 0%;
+		background-size: 0% 100%;
+	}
+	100% {
+		background-position: 0% 0%;
+		background-size: 100% 100%;
+	}
+}
+
+@mixin destroy-link() {
+	background-image: none !important;
 }

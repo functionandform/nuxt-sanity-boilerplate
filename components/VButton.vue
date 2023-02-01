@@ -2,13 +2,15 @@
   <component :is="getComponentType"
     :type="type ? type : getComponentType === 'button' ? 'button' : null"
     :to="to"
+    :target="url || (to?.length && to.includes('http')) ? '_blank' : null"
     :href="url"
     :exact="to && exact ? exact : null"
     :class="[
-      'button button--' + weight + ' ' + addClass+' ', {'button--small':small, 'button--active':active}]"
+      'button button--' + weight + ' ' + addClass+' ', {'button--small':small, 'button--active':active, 'button--invert':invert, 'button--trailing-icon':trailingIcon}]"
     ref="button"
     :active-class="activeClass"
-  ><div class="button__fill"></div><div class="button__icon-fill"></div><div class="button__loading-icon" v-if="loading"><span></span><span></span><span></span></div><div class="button__icon button__icon--leading" v-if="leadingIcon"><icon :name="leadingIcon" size="normal"></icon></div><span class="button__label" ref="label"><slot/></span><span class="button__meta" v-if="meta || typeof meta == 'number'">&nbsp;{{meta}}</span><div class="button__icon button__icon--trailing" v-if="trailingIcon"><icon :name="trailingIcon" size="normal"></icon></div><div class="button__click-handler" @click="onClick(e)"></div></component>
+    :aria-label="slots.default()[0]?.children.toString()"
+  ><div class="button__fill"></div><div class="button__icon-fill"></div><div class="button__icon button__icon--leading" v-if="!trailingIcon && (leadingIcon || loading)"><div class="button__loading-icon" v-if="loading"><svg preserveAspectRatio="none" viewbox="0 0 16 16"><circle cx="8" cy="8"  fill="none" stroke-width="4" r="6"/></svg></div><icon v-else="leadingIcon" :name="leadingIcon" size="normal"/></div><span class="button__label" ref="label"><slot/></span><span class="button__meta" v-if="meta || typeof meta == 'number'">&nbsp;{{meta}}</span><div class="button__icon button__icon--trailing" v-if="trailingIcon"><icon :name="trailingIcon" size="normal"/></div><div class="button__click-handler" @click="onClick(e)"></div></component>
 </template>
 
 <script setup>
@@ -84,30 +86,11 @@
     }
   });
 
-  const labelHtml = computed(() => {
-    const labelSlot = slots.default();
-    const label = labelSlot[0]?.children;
-    console.log(label);
-    const chars = label.split('');
-    return '<span>'+ chars.join('</span><span>') + '</span>';
-  });
 
-  const applyInvertClass = computed(() => {
-    if (props.invert) {
-      return 'button--invert';
-    } else {
-      return null;
-    }
-  });
-  const applyLoadingClass = computed(() => {
-    if (props.loading) {
-      return 'button--loading';
-    } else {
-      return null;
-    }
-  });
   const getComponentType = computed(() => {
-    if (props.to) {
+    if (props.type === 'div') {
+      return 'div'
+    } else if (props.to) {
       return resolveComponent('NuxtLink')
     } else if (props.url) {
       return 'a'
@@ -116,9 +99,36 @@
     }
   });
 
-  function applyWeightClass() {
-    return `button--${props.weight}`;
-  };
+  function onClick(e) {
+    // const label = label.value ? label.value.innerHTML.replace(/<[^>]*>?/gm, '') : null;
+    // if (this.dataLayerEnabled && this.type !== 'radio' && this.type !== 'checkbox') {
+    //   let baseVariables = {
+    //     event:e,
+    //     ctaWeight:props.weight,
+    //     locationPath:route.fullPath,
+    //     ctaLabel:label
+    //   }
+    //   if (props.action && props.action.length) {
+    //     baseVariables.action = props.action
+    //   } else if (props.to && props.to.length && props.to.startsWith('/forms/')) {
+    //     const slug = props.to.split("/").pop();
+    //     baseVariables.action = 'viewForm';
+    //     baseVariables.form = slug;
+    //   }
+    //   if (props.to && props.to.length) {
+    //     baseVariables.destinationPath = props.to
+    //   } else if (props.url && props.url.length) {
+    //     baseVariables.externalUrl = props.url
+    //   }
+    //   if (props.location && props.location.length) {
+    //     baseVariables.location = props.location
+    //   }
+    //   if (props.dataLayerVariables) {
+    //     baseVariables = {...baseVariables, ...props.dataLayerVariables}
+    //   }
+    //   // ctx.pushDataLayer(baseVariables);
+    // }
+  }
 </script>
 
 
@@ -141,7 +151,9 @@
   height:vr(1);
   min-height:vr(1);
   font-size:1rem;
-  letter-spacing: 0.015em;
+  color:var(--primary);
+  font-weight:700;
+  font-family:$body-font-family;
   cursor:pointer;
   &__click-handler {
     position:absolute;
@@ -155,18 +167,25 @@
     display:table-cell;
     vertical-align: middle;
     pointer-events:none;
+    color:currentColor;
   }
   &__label {
     transition:0.2s $ease-in-out-expo;
     z-index: 1;
-    color:currentColor;
+    padding-right:0.5rem;
+  }
+  &--trailing-icon {
+    .button__label {
+      padding-left:0.5rem;
+      padding-right:0.5rem;
+    }
   }
   &__meta {
-    color:currentColor;
     font-size:0.8em;
     
   }
   &__icon {
+    height:vr(1); width:vr(1);
     position:relative;
     .icon {
       display:block;
@@ -175,8 +194,11 @@
       transform:translate(-50%,-50%);
       transition:0.2s $ease-in-out-expo;
     }
+    & ~ .button__label {
+      padding-left:0.5em;
+    }
   }
-  &__fill {
+  &__fill,  {
     pointer-events:none;
     background-color: transparent;
     width:100%;
@@ -186,6 +208,7 @@
     transform-origin:center left;
     max-height:100%;
     transform:translateY(-50%);
+    border-radius:$radius-sm;
   }
   &--primary, &--category, &--secondary {
     text-align:center;
@@ -195,12 +218,15 @@
     .button {
      &__icon {
       height:2rem; width:2rem;
-     }
-     &__icon-fill {
-      height:2rem; max-width:2rem;
+      
      }
       &__label {
         margin:0 1rem;
+        
+      }
+      &__fill {
+        height:2rem;
+        background-color: currentColor;
       }
     }
     .icon {
@@ -213,12 +239,14 @@
       }
     }
   }
+  
   &--disabled, &:disabled {
     pointer-events:none;
     cursor:not-allowed;
   }
   &--invert {
-
+    
+    
   }
   &--small {
     &.button--primary {
@@ -227,6 +255,7 @@
       max-height:vr(1.5);
     }
   }
+
 }
 
 a:hover, .button:hover, .button.button--active {

@@ -6,7 +6,7 @@
 
 body, html {
 	@include line-height(1);
-	font-family:$body-font-family;
+	
 }
 
 * {
@@ -42,12 +42,14 @@ html {
 }
 
 ::selection {
-  background: black;
-  color:#FFFFFF;
+  background: var(--contrast);
+  color:var(--bg);
 }
 
 body {
 	font-weight:400;
+	font-family:$body-font-family;
+	color:var(--contrast);
 }
 
 * {
@@ -57,8 +59,8 @@ body {
 
 p, ul {
 	margin-bottom:vr(1);
-	&.small, small {
-		font-size:0.8rem;
+	&.small, small, .small {
+		font-size:0.9rem;
 	}
 	&.big, big {
 	}
@@ -97,6 +99,10 @@ p, ul {
 	}
 }
 
+.small, small {
+	font-size:0.9rem;
+}
+
 
 strong {
 	font-weight:bolder;
@@ -110,9 +116,7 @@ em {
 
 p, ul, ol, h1, h2, h3, h4, h5, h6 {
 	a:link, a:visited {
-		&:hover {
-			
-		}
+		@include link();
 	}
 }
 
@@ -123,19 +127,20 @@ h1,h2,h3,h4,h5, .h1,.h2,.h3,.h4,.h5 {
 h5, .h5 {
 	font-size:1rem;
 	margin-bottom:vr(1);
-	@include breakpoint(xl) {
+	@include breakpoint(lg) {
 		font-size:0.8rem;
 	}
 }
 
 h4, .h4 {
 	font-size:1rem;
+
 }
 
-h3, .h3 {
+h3:not(.h4):not(.h2):not(.h1), .h3 {
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
-	font-size:1.8rem;
+	font-size:1.5rem;
 	@include line-height(1.5);
 	@include breakpoint(lg) {
 		
@@ -143,11 +148,11 @@ h3, .h3 {
 }
 
 
-h2:not(.h1), .h2 {
+h2:not(.h4):not(.h1):not(.h3), .h2 {
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
-	font-size:2.4rem;
-	@include line-height(2);
+	font-size:1.8rem;
+	@include line-height(1.5);
 	@include breakpoint(md) {
 		font-size:2.5rem;
 		@include line-height(2);
@@ -159,17 +164,17 @@ h2:not(.h1), .h2 {
 }
 
 
-h1:not(.h4), .h1 {
+h1:not(.h4):not(.h2):not(.h3), .h1 {
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
-	font-size: 2.5rem;
+	font-size: 2.4rem;
 	@include line-height(2);
 	@include breakpoint(md) {
 		font-size: 3rem;
 		@include line-height(2.5);
 	}
 	@include breakpoint(xxl) {
-		font-size: 3.8rem;
+		font-size: 3.7rem;
 		@include line-height(3);
 	}
 	@include breakpoint(xl) {
@@ -202,10 +207,12 @@ ol,ul {
   display:block;
   li {
     padding-left:vr(1.25);
+    min-height:vr(1);
     line-height:vr(1);
     position:relative;
     counter-increment: list;
     margin-bottom:vr(0.5);
+    text-align: left;
     &::before {
       position:absolute;
       transform: rotate3d(0,0,0,0);
@@ -214,20 +221,55 @@ ol,ul {
       left:0;
       top:0;
       content:"";
+      color:$pink;
+      color:var(--accent);
     }
 	  &.footnotes {
 	  	li::before {
-
+	  		color:var(--primary);
 	  	}
 	  }
 	}
-	&.inline {
-		display:flex;
-		flex-wrap:wrap;
-		li {
-			flex:0 0 auto;
-			display:inline-block;
-			margin-right:vr(1);
+	@include breakpoint(md) {
+		&.inline {
+			display:flex;
+			flex-wrap:wrap;
+			margin:0 vr(-0.5);
+			li {
+				flex:1 1 auto;
+				margin-right:vr(0.5);
+				margin-left:vr(0.5);
+			}
+		}
+		&.inline-double {
+			display:flex;
+			flex-wrap:wrap;
+			margin:0 vr(-0.5);
+			li {
+				flex:0 0 calc(50% - var(--baseline));
+				margin-right:vr(0.5);
+				margin-left:vr(0.5);
+			}
+		}
+		&.inline-tripple {
+			display:flex;
+			flex-wrap:wrap;
+			margin:0 vr(-0.5);
+			li {
+				flex:0 0 calc(33.33% - var(--baseline));
+				margin-right:vr(0.5);
+				margin-left:vr(0.5);
+			}
+		}
+		&.inline-quad {
+			display:flex;
+			flex-wrap:wrap;
+			margin:0 vr(-0.5);
+			li {
+				flex:0 0 calc(25% - var(--baseline));
+				margin-right:vr(0.5);
+				margin-left:vr(0.5);
+			}
 		}
 	}
 }
@@ -256,6 +298,7 @@ ul li {
 }
 
 .feature-text, ul.features {
+	margin-bottom:vr(0.5);
   li {
   	
   	transform:translate3d(0,0,0);
@@ -265,6 +308,7 @@ ul li {
       background-size:1rem;
       background-repeat:no-repeat;
       background-position:center;
+      background-color:var(--secondary);
       display:inline-block;
       content:'';
       mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' width='24' viewBox='0 0 24 24'%3E%3Cg stroke-linecap='square' stroke-width='2' fill='none' stroke='black' stroke-linejoin='miter' class='nc-icon-wrapper' stroke-miterlimit='10'%3E%3Cpolyline points='6,12 10,16 18,8 '%3E%3C/polyline%3E%3C/g%3E%3C/svg%3E") center center no-repeat;
@@ -275,4 +319,72 @@ ul li {
     	content:" ";
     }
   }
+  &.align-center {
+  	display:flex;
+  	justify-content: center;
+  	flex-wrap:wrap;
+  }
+}
+
+.primary-color {
+	color:var(--primary);
+}
+
+.secondary-color {
+	color:var(--secondary);
+}
+
+
+
+h4.tag, .h4.tag, .tag {
+	font-family:$body-font-family;
+		border-radius:$radius-sm;
+		padding:0 0.5em;
+		background-color:var(--bg);
+		display:inline-block;
+		position:relative;
+		margin-right:0.25em;
+		&--secondary {
+			color:var(--secondary);
+			font-weight:700;
+		}
+		&--tertiary {
+			color:var(--secondary);
+			font-weight:700;
+		}
+		&--primary {
+			background-color:var(--secondary);
+			z-index: 1;
+			font-weight:700;
+			color:var(--bg);
+			& + .tag.tag--secondary {
+				border-top-left-radius:0;
+				border-bottom-left-radius:0;
+				padding-left:0.75em;
+				margin-left:-0.5em;
+			}
+		}
+		&--invert {
+			&.tag--secondary {
+				background-color:var(--secondarySoft);
+			}
+		}
+}
+span.tag {
+	font-family:$body-font-family;
+	font-size:0.8em;
+	line-height:1.5em;
+}
+
+h4.tag, .h4.tag {
+	margin-bottom:vr(1);
+}
+
+
+.secondary {
+	color:var(--secondary);
+}
+
+.meta {
+	letter-spacing: 0.05em;
 }

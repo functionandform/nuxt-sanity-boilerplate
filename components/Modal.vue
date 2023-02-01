@@ -1,6 +1,6 @@
 <template>
   <transition appear name="outer-overlay-transition" :duration="{ enter: 800, leave: 800 }" @enter="lockBody()" @leave="releaseBody()">
-    <div class="modal" :data-fill="fill" :data-size="size" v-if="ModalIsOpen">
+    <div class="modal" :data-fill="fill" :data-size="size" v-if="modalIsOpen">
       <div class="modal__bg" @click="closeModal()"></div>
       <div class="modal__window">
         <div class="modal__container">
@@ -12,42 +12,45 @@
   </transition>
 </template>
 
-<script>
-  export default {
-    props: {
-      size: {
-        required:false,
-        type:String,
-        default:"md"
-      },
-      fill: {
-        required:false,
-        type:Boolean,
-        default:false
-      }
-    },
-    data() {
-      return {
-        ModalIsOpen: false
-      }
-    },
-    methods: {
-      openModal() {
-        this.ModalIsOpen = true;
-      },
-      closeModal() {
-        this.ModalIsOpen = false;
-      },
-      lockBody() {
-      const body = document.querySelector('body');
+<script setup>
+
+  import { useModalStore } from '~/stores';
+  import { storeToRefs } from 'pinia';
+
+  const {modalIsOpen} = storeToRefs(useModalStore());
+
+  const props = defineProps({
+    size: {required:false,type:String,default:'md'},
+    fill:{required:false,type:Boolean,default:null}
+  })
+
+  function openModal() {
+    console.log('open')
+    modalIsOpen.value = true;
+  };
+
+  function closeModal() {
+    modalIsOpen.value = false;
+  };
+
+  function lockBody() {
+    const body = document.querySelector('body');
+    if (body) {
       body.classList.add('modal-open');
-    },
-    releaseBody() {
-      const body = document.querySelector('body');
+    }
+  };
+  function releaseBody() {
+    const body = document.querySelector('body');
+    if (body) {
       body.classList.remove('modal-open');
     }
-    }
   }
+
+  defineExpose({
+    openModal,
+    closeModal
+});
+
   </script>
 
 
@@ -68,7 +71,6 @@
       position:fixed;
       top:0; left:0;
       width:100%; height:100%;
-      backdrop-filter: blur(10px);
     }
     &__close {
       @include remove-button(vr(1), black);
@@ -183,7 +185,7 @@
     }
   }
 
-  .outer-overlay-transition-enter,
+  .outer-overlay-transition-enter-from,
   .outer-overlay-transition-leave-to {
     opacity: 0;
     .modal__window {

@@ -33,4 +33,10 @@
 	.align-right .button-row, .button-row.align-right {
 		justify-content: flex-end;
 	}
+
+	.button-row.no-margin {
+		margin-bottom:0;
+	}
+
+
 	</style>

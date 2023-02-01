@@ -1,7 +1,10 @@
 html, body {
 
+	background-color:var(--bgSoft);
 	
-	
+}
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -17,5 +20,10 @@ body {
 	}
 	&.overlay-open {
 		overflow:hidden;
+	}
+	&.menu-is-open {
+		@include breakpoint-less-than(lg) {
+			overflow: hidden;
+		}
 	}
 }

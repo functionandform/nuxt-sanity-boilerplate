@@ -7,6 +7,7 @@ export default () => {
         internal->{
           slug, 
           title,
+          path,
           _type
         }
       }

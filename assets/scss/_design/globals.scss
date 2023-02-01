@@ -9,3 +9,7 @@ button:not(:hover):not(:active):focus, a:not(:hover):not(:active):focus {
 ::selection {
   
 }
+
+.section {
+	padding-bottom:vr(1);
+}
