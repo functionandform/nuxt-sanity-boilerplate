@@ -14,9 +14,9 @@ export const getRedirects = async () => {
   let redirectsObject = {};
 
   const redirectQuery = `*[_type == "redirect"]{
-		'from':fromPath,
-		'redirect':{'to':toPath, 'statusCode':statusCode}
-	}`;
+    'from':fromPath,
+    'redirect':{'to':toPath, 'statusCode':statusCode}
+  }`;
   const data = await client.fetch(redirectQuery);
   if (data && data.length) {
     data.forEach((item) => {
@@ -34,7 +34,7 @@ export const getRedirects = async () => {
 export default defineNuxtConfig({
   app: {
     head: {
-      title: "Cool Planet",
+      title: "Boilerplate",
       htmlAttrs: {
         lang: "en-GB",
       },
@@ -61,6 +61,7 @@ export default defineNuxtConfig({
           href: "/favicon/favicon-16x16.png",
         },
         { rel: "manifest", href: "/favicon/site.webmanifest" },
+        { rel: "stylesheet", href: "https://use.typekit.net/tqh2giv.css" },
       ],
     },
   },
@@ -71,11 +72,24 @@ export default defineNuxtConfig({
     "@nuxt/image-edge",
     "@nuxtjs/robots",
     "~/modules/sitemap",
+    '@vueuse/nuxt',
   ],
   sitemap: {
     hostname: process.env.BASE_URL,
   },
   routeRules: getRedirects(),
+  // hooks: {
+  //   "pages:extend"(pages) {
+  //     pages.push(
+        
+  //       {
+  //         name: "site.blogIndex",
+  //         path: "/blog",
+  //         file: resolve("/pages/blog/[category]/page/[page].vue"),
+  //       },
+  //     );
+  //   },
+  // },
   robots: () => {
     if (process.env.ENVIRONMENT && process.env.ENVIRONMENT === "production") {
       // production environment - allow robots
