@@ -2,7 +2,6 @@
 	width:100%;
 	display:block;
 	margin-bottom:vr(1);
-	border-radius:$radius-md;
 	&--max-height {
 		max-height:90vh;
 		object-fit: contain;
@@ -13,7 +12,7 @@
 
 hr {
 	border:none;
-	border-top:1px solid black;
+	border-top:1px solid var(--contrast);
 	display:block;
 	margin-top:-1px;
 	height:vr(1);

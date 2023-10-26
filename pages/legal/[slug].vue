@@ -48,33 +48,33 @@
 </template>
 
 <script setup>
-import { entryMeta } from "~/helpers";
-import groqQuery from "~/queries/groq/legal-page";
+import entryMeta from "~/utils/entryMeta";
+import groqQuery from "~/queries/groq/entry";
 const config = useRuntimeConfig();
 const route = useRoute();
-const query = groqQuery(route.params.slug);
+const query = groqQuery({type:'legal',slug:route.params.slug});
 
-const sanity = useSanity();
-const {
-  pending,
-  data: entry,
-  error,
-} = await useLazyAsyncData(route.fullPath, () => sanity.fetch(query));
-if (error?.value) {
-  throw createError({ statusCode: 500 });
-} else if (!error?.value && !pending?.value && !entry?.value) {
-  throw createError({ statusCode: 404 });
-} else if (entry?.value) {
-  const meta = entryMeta(entry.value);
-  useHead({
-    title: entry.value?.meta?.title,
-    meta: meta,
-    link: [
-      {
-        rel: "canonical",
-        href: `${config.public.baseUrl}/legal/${route.params.slug}`,
-      },
-    ],
-  });
-}
+// const sanity = useSanity();
+// const {
+//   pending,
+//   data: entry,
+//   error,
+// } = await useLazyAsyncData(route.fullPath, () => sanity.fetch(query));
+// if (error?.value) {
+//   throw createError({ statusCode: 500 });
+// } else if (!error?.value && !pending?.value && !entry?.value) {
+//   throw createError({ statusCode: 404 });
+// } else if (entry?.value) {
+//   const meta = entryMeta(entry.value);
+//   useHead({
+//     title: entry.value?.meta?.title,
+//     meta: meta,
+//     link: [
+//       {
+//         rel: "canonical",
+//         href: `${config.public.baseUrl}/legal/${route.params.slug}`,
+//       },
+//     ],
+//   });
+// }
 </script>

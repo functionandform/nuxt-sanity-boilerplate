@@ -1,4 +1,4 @@
-export function entryMeta(entry) {
+export default (entry) => {
 	const meta = [];
 	const entryMetaData = entry?.meta;
 	if (entryMetaData) {

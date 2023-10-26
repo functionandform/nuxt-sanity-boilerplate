@@ -2,7 +2,6 @@ import image from './helpers/image';
 import link from './helpers/link';
 import meta from './helpers/meta';
 import cta from './helpers/cta';
-import listedEntries from './helpers/listedEntries';
 
 export default () => {
 	return groq`{
@@ -14,12 +13,5 @@ export default () => {
 				entityBrand {${image()}}
 			}
 		}, 
-		'navigation':*[_type == "navigation"][0]{
-			...,
-			utilityMenu[] {
-				...				
-			}
-		}
-
 	}`
 }

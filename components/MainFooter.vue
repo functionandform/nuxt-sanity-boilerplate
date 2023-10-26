@@ -5,16 +5,7 @@
           <column xxs="12" md="3">
             <nuxt-link to="/"><logo/></nuxt-link>
           </column>
-          <!-- <column xxs="12" md="9" v-if="utilityMenu">
-            <div class="footer__columns" :data-qty="utilityMenu.length">
-              <div class="footer__group" v-for="(group,groupIndex) in utilityMenu" :key="'group-'+groupIndex">
-                <h5>{{group.title}}</h5>
-                <div class="footer__group__item" v-for="(item,itemIndex) in group.items" :key="`group-${groupIndex}-item-${itemIndex}`">
-                   <div><component :is="getLinkType(item)" :class="item.internalLink ? 'footer__group__item__link' : null" :to="item.internalLink?.path ? item.internalLink.path : null"><span>{{item.title ? item.title : item.internalLink?.title ? item.internalLink?.title : item.internalLink?._type}}<tag v-if="item.tag" invert :tag="item.tag"/></span></component></div>
-                  </div>
-              </div>
-            </div>
-          </column> -->
+          
         </row>
     </container>
     <container class="footer__container">

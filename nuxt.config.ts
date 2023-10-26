@@ -1,40 +1,15 @@
 import { resolve } from "path";
-import sanityClient from "@sanity/client";
 
-import dynamicRoutes from "./helpers/dynamicRoutes";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+// import { getRedirects } from "./server/utils/redirects.ts";
 
-const client = sanityClient({
-  projectId: process.env.SANITY_PROJECT_ID,
-  apiVersion: process.env.SANITY_API_VERSION,
-  useCdn: process.env.SANITY_CDN,
-  dataset: process.env.SANITY_DATASET,
-});
-
-export const getRedirects = async () => {
-  let redirectsObject = {};
-
-  const redirectQuery = `*[_type == "redirect"]{
-    'from':fromPath,
-    'redirect':{'to':toPath, 'statusCode':statusCode}
-  }`;
-  const data = await client.fetch(redirectQuery);
-  if (data && data.length) {
-    data.forEach((item) => {
-      redirectsObject[item.from] = {
-        redirect: item.redirect,
-      };
-    });
-    console.info("Redirects are generated");
-  } else {
-    console.info("No redirects sourced");
-  }
-  return redirectsObject;
-};
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 export default defineNuxtConfig({
   app: {
     head: {
-      title: "Boilerplate",
       htmlAttrs: {
         lang: "en-GB",
       },
@@ -44,89 +19,62 @@ export default defineNuxtConfig({
       ],
       link: [
         {
-          rel: "apple-touch-icon",
-          sizes: "180x180",
-          href: "/favicon/apple-touch-icon.png",
+          rel: "icon",
+          sizes: "any", // 32.x32
+          href: "/icon/favicon.ico",
+        },
+        {
+          rel: "apple-touch-icon", // 180
+          type: "image/svg+xml",
+          href: "/icon/apple-touch-icon.png",
         },
         {
           rel: "icon",
-          type: "image/png",
-          sizes: "32x32",
-          href: "/favicon/favicon-32x32.png",
+          type: "image/svg+xml",
+          href: "/icon/icon.svg",
         },
-        {
-          rel: "icon",
-          type: "image/png",
-          sizes: "16x16",
-          href: "/favicon/favicon-16x16.png",
-        },
-        { rel: "manifest", href: "/favicon/site.webmanifest" },
-        { rel: "stylesheet", href: "https://use.typekit.net/tqh2giv.css" },
+        { rel: "manifest", href: "/icon/manifest.webmanifest" },
+        // { rel: "stylesheet", href: "https://use.typekit.net/tqh2giv.css", defer: true, media:"print", onload:"this.media='all'"},
       ],
     },
   },
   modules: [
-    "@nuxtjs/sanity",
+    // "@nuxtjs/sanity",
     "nuxt-jsonld",
     "@pinia/nuxt",
     "@nuxt/image-edge",
     "@nuxtjs/robots",
-    "~/modules/sitemap",
-    '@vueuse/nuxt',
+    "@pinia-plugin-persistedstate/nuxt",
+    "nuxt-simple-sitemap",
+    "nuxt-schema-org",
+    "@vueuse/nuxt",
   ],
-  sitemap: {
-    hostname: process.env.BASE_URL,
+  // routeRules: getRedirects(),
+  robots: {
+    configPath:'@/server/utils/robots.ts'
   },
-  routeRules: getRedirects(),
-  // hooks: {
-  //   "pages:extend"(pages) {
-  //     pages.push(
-        
-  //       {
-  //         name: "site.blogIndex",
-  //         path: "/blog",
-  //         file: resolve("/pages/blog/[category]/page/[page].vue"),
-  //       },
-  //     );
-  //   },
+  // sanity: {
+  //   projectId: process.env.SANITY_PROJECT_ID,
+  //   apiVersion: process.env.SANITY_API_VERSION,
+  //   useCdn: process.env.SANITY_CDN,
+  //   dataset: process.env.SANITY_DATASET,
   // },
-  robots: () => {
-    if (process.env.ENVIRONMENT && process.env.ENVIRONMENT === "production") {
-      // production environment - allow robots
-      return {
-        sitemap: process.env.BASE_URL + "/sitemap.xml",
-        UserAgent: "*",
-        Disallow: ["/admin", "/.env", "/users"],
-      };
-    } else {
-      // every other environment - block robots
-      return {
-        sitemap: process.env.BASE_URL + "/sitemap.xml",
-        UserAgent: "*",
-        Disallow: "/",
-      };
-    }
-  },
-  sanity: {
-    projectId: process.env.SANITY_PROJECT_ID,
-    apiVersion: process.env.SANITY_API_VERSION,
-    useCdn: process.env.SANITY_CDN,
-    dataset: process.env.SANITY_DATASET,
-  },
-  runtimeConfig: { 
-    public:{
-      siteName:process.env.SITE_NAME,
-      baseUrl:process.env.BASE_URL,
-      gtmId:process.env.GTM_ID
+  runtimeConfig: {
+    public: {
+      siteName: process.env.SITE_NAME,
+      siteUrl: process.env.BASE_URL,
+      baseUrl: process.env.BASE_URL,
+      gtmId: process.env.GTM_ID,
+      googleCloudConsoleApiKey: process.env.GOOGLE_CLOUD_CONSOLE_API_KEY,
     },
-    },
+  },
   target: "static",
   image: {
     // Options
-    sanity: {
-      projectId: process.env.SANITY_PROJECT_ID,
-      dataset: process.env.SANITY_DATASET,
-    },
+    // sanity: {
+    //   projectId: process.env.SANITY_PROJECT_ID,
+    //   dataset: process.env.SANITY_DATASET,
+    // },
     screens: {
       xxs: 320,
       xs: 359,
@@ -140,7 +88,9 @@ export default defineNuxtConfig({
       "4k": 3700,
     },
   },
-  css: ["@/assets/scss/main.scss"],
+  css: [
+    "@/assets/scss/main.scss"
+    ],
   vite: {
     css: {
       preprocessorOptions: {
@@ -153,4 +103,20 @@ export default defineNuxtConfig({
   alias: {
     "@app": "/@app",
   },
+  build: {
+    // to reslove the error mentioned here: https://github.com/googlemaps/js-api-loader/issues/692
+    transpile: ["@googlemaps/js-api-loader"],
+  },
+  generate: {
+    fallback: true
+  },
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/404.html'
+      ]
+    }
+  }
 });

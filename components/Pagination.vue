@@ -47,15 +47,15 @@ const countQuery = `count(*[_type in ${typeString}${
   props.industry ? ` && industry->slug.current == "${props.industry}"` : ""
 }${props.role ? ` && role->slug.current == "${props.role}"` : ""}])`;
 
-const sanity = useSanity();
-const { pending, data: count, error } = await useLazyAsyncData(route.fullPath, () => sanity.fetch(countQuery));
+// const sanity = useSanity();
+// const { pending, data: count, error } = await useLazyAsyncData(route.fullPath, () => sanity.fetch(countQuery));
 
-if (error?.value) {
-  console.error(error.value);
-} else if (count?.value) {
-} else {
-  console.warn("No entries");
-}
+// if (error?.value) {
+//   console.error(error.value);
+// } else if (count?.value) {
+// } else {
+//   console.warn("No entries");
+// }
 
 const totalPages = computed(() => {
   const calcPages = count.value / props.limit;

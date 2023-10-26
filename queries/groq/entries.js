@@ -4,7 +4,6 @@ export default ({
   types = ["article"],
   offset = 0,
   limit = 100,
-  industry = null,
   role = null,
   lastId = null,
 } = {}) => {
