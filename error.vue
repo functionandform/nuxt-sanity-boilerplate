@@ -2,9 +2,8 @@
   <div class="app app--error">
     <client-only>
       <main>
-        <container>
-          <row center-xs>
-            <column xs="12" md="8">
+        <grid-container>
+            <grid-cell col-span-lg="8" col-start-lg="3">
               <div class="header-spacer"></div>
               <h4 v-if="error && error.statusCode">Error {{error.statusCode}}</h4>
               <template v-if="error.statusCode == 404">
@@ -16,9 +15,8 @@
                 <h1>Well that didn't go to plan.</h1>
                 <p>Something has gone wrong on our end. Please try refreshing or check back later.</p>
               </template>
-            </column>
-          </row>
-        </container>
+            </grid-cell>
+        </grid-container>
       </main>
     </client-only>
   </div>

@@ -42,6 +42,14 @@ body {
 	-moz-osx-font-smoothing: grayscale; /* Fixes font bold issue in Firefox version 25+ on Mac */
 }
 
+h1, .h1 {
+	text-wrap: balance;
+}
+
+p, ul, h2, h3, h4, h5, .h2, .h3, .h4, .h5 {
+	text-wrap:pretty;
+}
+
 p, ul {
 	margin-bottom:vr(1);
 	&.small, small, .small {
@@ -85,6 +93,7 @@ p, ul, ol, h1, h2, h3, h4, h5, h6 {
 		@include link();
 	}
 }
+
 
 h1, .h1 {
 	font-family:$title-font-family;

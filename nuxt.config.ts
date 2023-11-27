@@ -18,21 +18,21 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
       ],
       link: [
-        {
-          rel: "icon",
-          sizes: "any", // 32.x32
-          href: "/icon/favicon.ico",
-        },
-        {
-          rel: "apple-touch-icon", // 180
-          type: "image/svg+xml",
-          href: "/icon/apple-touch-icon.png",
-        },
-        {
-          rel: "icon",
-          type: "image/svg+xml",
-          href: "/icon/icon.svg",
-        },
+        // {
+        //   rel: "icon",
+        //   sizes: "any", // 32.x32
+        //   href: "/icon/favicon.ico",
+        // },
+        // {
+        //   rel: "apple-touch-icon", // 180
+        //   type: "image/svg+xml",
+        //   href: "/icon/apple-touch-icon.png",
+        // },
+        // {
+        //   rel: "icon",
+        //   type: "image/svg+xml",
+        //   href: "/icon/icon.svg",
+        // },
         { rel: "manifest", href: "/icon/manifest.webmanifest" },
         // { rel: "stylesheet", href: "https://use.typekit.net/tqh2giv.css", defer: true, media:"print", onload:"this.media='all'"},
       ],
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     // "@nuxtjs/sanity",
     "nuxt-jsonld",
     "@pinia/nuxt",
-    "@nuxt/image-edge",
+    "@nuxt/image",
     "@nuxtjs/robots",
     "@pinia-plugin-persistedstate/nuxt",
     "nuxt-simple-sitemap",
@@ -64,8 +64,7 @@ export default defineNuxtConfig({
       siteName: process.env.SITE_NAME,
       siteUrl: process.env.BASE_URL,
       baseUrl: process.env.BASE_URL,
-      gtmId: process.env.GTM_ID,
-      googleCloudConsoleApiKey: process.env.GOOGLE_CLOUD_CONSOLE_API_KEY,
+      //gtmId: process.env.GTM_ID
     },
   },
   target: "static",
@@ -102,10 +101,6 @@ export default defineNuxtConfig({
   },
   alias: {
     "@app": "/@app",
-  },
-  build: {
-    // to reslove the error mentioned here: https://github.com/googlemaps/js-api-loader/issues/692
-    transpile: ["@googlemaps/js-api-loader"],
   },
   generate: {
     fallback: true
