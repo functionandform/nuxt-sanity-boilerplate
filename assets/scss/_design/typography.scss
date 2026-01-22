@@ -15,12 +15,10 @@ html {
 	@include breakpoint(lg) {
 		font-size:18px;
 	}
-	@include breakpoint(xl) {
-		font-size:20px;
-	}
-	@include breakpoint(xxl) {
-		font-size: 1.333vw;
-	}
+	
+	// @include breakpoint(xxl) {
+	// 	font-size: 1.333vw;
+	// }
 }
 
 ::selection {
@@ -31,10 +29,11 @@ html {
 body {
 	font-weight:400;
 	font-family:$body-font-family;
+	color:var(--contrast);
 }
 
 .app {
-	color:var(--contrast);
+	
 }
 
 * {
@@ -95,7 +94,7 @@ p, ul, ol, h1, h2, h3, h4, h5, h6 {
 }
 
 
-h1, .h1 {
+h1, .h1, h2, .h2, h3,.h3, h4,.h4 {
 	font-family:$title-font-family;
 }
 
@@ -110,38 +109,35 @@ h5, .h5 {
 }
 
 h4, .h4 {
-	font-size:1.1rem;
+	font-size:1rem;
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
-	font-weight:500;
-	@include breakpoint(xxl) {
-		font-size:1.05rem;
-	}
+	font-weight:600;
+	text-transform:uppercase;
+	
 }
 
-h3:not(.h4):not(.h2):not(.h1):not(.raw), .h3 {
+h3:not(.h4):not(.h2):not(.h1):not(.raw), .subtitle, .h3 {
 	font-variant-ligatures: discretionary-ligatures;
-	margin-bottom:vr(1);
-	font-size:1.6rem;
+	margin-bottom:vr(0.5);
+	font-size:1.5rem;
 	font-weight:400;
-	@include line-height(1.5);
+	@include line-height(1.25);
 	@include breakpoint(lg) {
 		
 	}
 }
+.subtitle {
+	margin-bottom:vr(1);
+}
 
-
-h2:not(.h4):not(.h1):not(.h3):not(.raw), .h2 {
+h2:not(.h4):not(.h1):not(.h3):not(.raw):not(.subtitle), .h2 {
 	font-variant-ligatures: discretionary-ligatures;
 	margin-bottom:vr(1);
 	font-size:1.8rem;
-	font-weight:400;
+	font-weight:700;
+	color:var(--accent);
 	@include line-height(1.5);
-	@include breakpoint(md) {
-		font-size:2.5rem;
-		@include line-height(2);
-		
-	}
 	@include breakpoint(xl) {
 		
 	}
@@ -150,34 +146,18 @@ h2:not(.h4):not(.h1):not(.h3):not(.raw), .h2 {
 
 h1:not(.h4):not(.h2):not(.h3):not(.raw), .h1 {
 	font-variant-ligatures: discretionary-ligatures;
-	margin-bottom:vr(1);
-	font-size: 5rem;
-	font-weight:700;
+	margin-bottom:vr(0.5);
+	font-size: 2.5rem;
+	font-weight:600;
 	color:var(--accent);
-	@include line-height(3);
-	@include breakpoint(md) {
-		font-size: 10rem;
-		@include line-height(7);
-	}
-	@include breakpoint(lg) {
-		font-size: 9rem;
-		@include line-height(5);
-	}
-	@include breakpoint(xl) {
-		font-size: 10.5rem;
-		@include line-height(6);
-	}
-	@include breakpoint(xl) {
-		font-size: 11rem;
-		@include line-height(6);
-	}
+	@include line-height(2);
 	// @include breakpoint(xxl) {
 	// 	font-size: 3.7rem;
 	// 	@include line-height(3);
 	// }
-	& + .h2, & + h2, & + .h3, & + h3 {
-		margin-top:vr(-1);
-	}
+	// & + .h2, & + h2, & + .h3, & + h3 {
+	// 	margin-top:vr(-0.5);
+	// }
 }
 
 
@@ -186,6 +166,24 @@ sup {
 	font-size:0.6em !important;
 	margin-top:-0.4em;
 }
+
+.tag {
+	color:var(--accent);
+	letter-spacing: 0.025em;
+	vertical-align: super;
+	font-size:0.6em;
+	margin-top:-0.4em;
+	&--strong {
+		 background-color: var(--accent);
+
+		 padding:vr(0.25) vr(0.5);
+		 line-height:vr(1);
+		 font-size:0.8em;
+		 color:var(--contrast);
+		 font-weight:700;
+	}
+}
+
 
 sub {
 	vertical-align: sub;

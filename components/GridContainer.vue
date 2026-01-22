@@ -20,10 +20,12 @@
 <style lang="scss">
 	.grid-container {
 		position:relative;
+		width:100%;
 		display:grid;
 		column-gap:vr(1);
 		grid-template-columns:repeat(12,1fr);
 		padding:0 vr(1);
+		margin-left:auto;margin-right:auto;
 		@include breakpoint(xxl) {
 			padding:0 vr(2);
 		}

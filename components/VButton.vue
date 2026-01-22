@@ -1,16 +1,6 @@
 <template>
-  <component :is="getComponentType"
-    :type="type ? type : getComponentType === 'button' ? 'button' : null"
-    :to="to"
-    :target="url || (to?.length && to.includes('http')) ? '_blank' : null"
-    :href="url"
-    :exact="to && exact ? exact : null"
-    :class="[
-      'button button--' + weight + ' ' + addClass+' ', {'button--small':small, 'button--active':active, 'button--invert':invert, 'button--trailing-icon':trailingIcon}]"
-    ref="button"
-    :active-class="activeClass"
-    :aria-label="slots.default()[0]?.children.toString()"
-  ><div class="button__fill"></div><div class="button__icon-fill"></div><div class="button__icon button__icon--leading" v-if="!trailingIcon && (leadingIcon || loading)"><div class="button__loading-icon" v-if="loading"><svg preserveAspectRatio="none" viewbox="0 0 16 16"><circle cx="8" cy="8"  fill="none" stroke-width="4" r="6"/></svg></div><icon v-else="leadingIcon" :name="leadingIcon" size="normal"/></div><span class="button__label" ref="label"><slot/></span><span class="button__meta" v-if="meta || typeof meta == 'number'">&nbsp;{{meta}}</span><div class="button__icon button__icon--trailing" v-if="trailingIcon"><icon :name="trailingIcon" size="normal"/></div><div class="button__click-handler" @click="onClick(e)"></div></component>
+  <component :is="getComponentType" :type="type ? type : getComponentType === 'button' ? 'button' : null" :to="to" :target="url || (to?.length && to.includes('http')) ? '_blank' : null" :href="url" :exact="to && exact ? exact : null" class="button" :class="{'button--primary':weight === 'primary', 'button--secondary':weight === 'secondary', 'button--small':small, 'button--active':active, 'button--invert':invert, 'button--trailing-icon':trailingIcon}" ref="button" :active-class="activeClass"
+  ><div class="button__fill"></div><div class="button__icon-fill"></div><div class="button__icon button__icon--leading" v-if="!trailingIcon && leadingIcon"><icon v-if="leadingIcon" :name="leadingIcon" size="normal"/></div><span class="button__label" ref="label"><slot/></span><div class="button__icon button__icon--trailing" v-if="trailingIcon"><icon :name="trailingIcon" size="normal"/></div><div class="button__click-handler"></div></component>
 </template>
 
 <script setup>
@@ -148,12 +138,9 @@
   display: inline-table;
   vertical-align: middle;
   margin-bottom:vr(1);
-  height:vr(1);
+  height:vr(2);
   min-height:vr(1);
   font-size:1rem;
-  color:var(--primary);
-  font-weight:700;
-  font-family:$body-font-family;
   cursor:pointer;
   &__click-handler {
     position:absolute;
@@ -189,6 +176,8 @@
     position:relative;
     .icon {
       display:block;
+      height:vr(1); width:vr(1);
+      color:currentColor;
       position:absolute;
       top:50%; left:50%;
       transform:translate(-50%,-50%);
@@ -198,7 +187,7 @@
       padding-left:0.5em;
     }
   }
-  &__fill,  {
+  &__fill {
     pointer-events:none;
     background-color: transparent;
     width:100%;
@@ -208,24 +197,21 @@
     transform-origin:center left;
     max-height:100%;
     transform:translateY(-50%);
-    border-radius:$radius-sm;
   }
-  &--primary, &--category, &--secondary {
+  &--primary, &--secondary {
     text-align:center;
-    background-color:transparent;
-    height:vr(2);
     max-height:vr(2);
+    padding:0 0.5rem;
     .button {
      &__icon {
-      height:2rem; width:2rem;
-      
+      height:2rem; width:2rem;      
      }
-      &__label {
-        margin:0 1rem;
+      &__label, &__icon {
+        color:contrast-color(currentColor);
         
       }
       &__fill {
-        height:2rem;
+        height:2.5rem;
         background-color: currentColor;
       }
     }
@@ -239,15 +225,12 @@
       }
     }
   }
-  
+    
   &--disabled, &:disabled {
     pointer-events:none;
     cursor:not-allowed;
   }
-  &--invert {
-    
-    
-  }
+
   &--small {
     &.button--primary {
       height:vr(1.5);

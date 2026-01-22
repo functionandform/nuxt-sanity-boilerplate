@@ -33,9 +33,9 @@
 	.icon {
 	  display: inline-block;
 	  /* icon primary color */
-	  color: black;
+	  color: var(--accent);
 	  height:1em; width:1em;
-	  stroke-width:1px;
+	  stroke-width:1.5px;
 	  vertical-align: middle;
 	}
 

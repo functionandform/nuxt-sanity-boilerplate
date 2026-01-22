@@ -1,117 +1,118 @@
-import { resolve } from "path";
-
-import { createPinia } from "pinia";
-import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-// import { getRedirects } from "./server/utils/redirects.ts";
-
-const pinia = createPinia();
-pinia.use(piniaPluginPersistedstate);
+// https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
   app: {
+    pageTransition:false,
+    viewTransition: true, 
     head: {
-      htmlAttrs: {
-        lang: "en-GB",
-      },
+      title: "Untitled",
+      htmlAttrs: { lang: "en-GB" },
       meta: [
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { charset: "utf-8" },
+        { charset: "utf-8" }
       ],
       link: [
-        // {
-        //   rel: "icon",
-        //   sizes: "any", // 32.x32
-        //   href: "/icon/favicon.ico",
-        // },
-        // {
-        //   rel: "apple-touch-icon", // 180
-        //   type: "image/svg+xml",
-        //   href: "/icon/apple-touch-icon.png",
-        // },
-        // {
-        //   rel: "icon",
-        //   type: "image/svg+xml",
-        //   href: "/icon/icon.svg",
-        // },
-        { rel: "manifest", href: "/icon/manifest.webmanifest" },
-        // { rel: "stylesheet", href: "https://use.typekit.net/tqh2giv.css", defer: true, media:"print", onload:"this.media='all'"},
+        { rel: "home", href: process.env.BASE_URL },
+        { rel: "icon", sizes: "any", href: "/icon/favicon.ico" },
+        { rel: "apple-touch-icon", type: "image/png", href: "/icon/apple-touch.png" },
+        { rel: "icon", type: "image/svg+xml", href: "/icon/default.svg" }
       ],
     },
   },
-  modules: [
-    // "@nuxtjs/sanity",
-    "nuxt-jsonld",
-    "@pinia/nuxt",
-    "@nuxt/image",
-    "@nuxtjs/robots",
-    "@pinia-plugin-persistedstate/nuxt",
-    "nuxt-simple-sitemap",
-    "nuxt-schema-org",
-    "@vueuse/nuxt",
-  ],
-  // routeRules: getRedirects(),
-  robots: {
-    configPath:'@/server/utils/robots.ts'
+  future: {
+    compatibilityVersion: 3
   },
-  // sanity: {
-  //   projectId: process.env.SANITY_PROJECT_ID,
-  //   apiVersion: process.env.SANITY_API_VERSION,
-  //   useCdn: process.env.SANITY_CDN,
-  //   dataset: process.env.SANITY_DATASET,
+  compatibilityDate: '2026-01-22',
+
+  devtools: {
+    enabled: true,
+    timeline: { enabled: true },
+  },
+  modules: [
+    "@nuxtjs/sanity", 
+    "@nuxt/fonts",
+    '@nuxt/image',
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
+    '@vueuse/nuxt',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
+    'nuxt-schema-org'
+  ],
+  sitemap: {
+    siteUrl: process.env.NUXT_BASE_URL,
+  },
+  // fonts: {
+  //   google: {
+  //     families: {
+  //       'PT Sans': [400, 500],
+  //       'Bona Nova': [400, 700],
+  //       'Corinthia':[700]
+  //     },
+  //     display: 'swap',
+  //     preload: true,
+  //     preconnect: true, 
+  //   },
   // },
+  sanity: {
+    projectId: process.env.NUXT_SANITY_PROJECT_ID,
+    dataset: process.env.NUXT_SANITY_DATASET,
+    apiVersion: process.env.NUXT_SANITY_API_VERSION || "2025-04-01",
+    token: process.env.NUXT_SANITY_API_READ_TOKEN, // Only required when using a private dataset
+    // visualEditing: {
+    //   token: process.env.NUXT_SANITY_API_READ_TOKEN,
+    //   studioUrl: process.env.NUXT_SANITY_STUDIO_URL,
+    //   zIndex: 51,
+    // },
+  },
   runtimeConfig: {
     public: {
-      siteName: process.env.SITE_NAME,
-      siteUrl: process.env.BASE_URL,
-      baseUrl: process.env.BASE_URL,
-      //gtmId: process.env.GTM_ID
+      studioUrl: process.env.SANITY_STUDIO_URL,
+      baseUrl: process.env.NUXT_BASE_URL, 
     },
   },
-  target: "static",
   image: {
-    // Options
-    // sanity: {
-    //   projectId: process.env.SANITY_PROJECT_ID,
-    //   dataset: process.env.SANITY_DATASET,
-    // },
-    screens: {
-      xxs: 320,
-      xs: 359,
-      sm: 640,
-      md: 768,
-      lg: 1024,
-      xl: 1280,
-      xxl: 1536,
-      xxxl: 1920,
-      quadHd: 2400,
-      "4k": 3700,
+    sanity: {
+      projectId: process.env.NUXT_SANITY_PROJECT_ID,
+      dataset: process.env.NUXT_SANITY_DATASET,
     },
+    screens: {
+      xxs: 320, xs: 359, sm: 640, md: 768, lg: 1024,
+      xl: 1280, xxl: 1536, xxxl: 1920, quadHd: 2400, "4k": 3700,
+    }
   },
-  css: [
-    "@/assets/scss/main.scss"
-    ],
+
+  css: ["~/assets/scss/main.scss"],
+
   vite: {
+    optimizeDeps: {
+      include: ["shallowequal", "lodash/startCase.js"],
+    },
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@use "@/assets/scss/tools.scss" as *;',
+          additionalData: '@use "~/assets/scss/tools.scss" as *;',
         },
       },
     },
   },
-  alias: {
-    "@app": "/@app",
-  },
   generate: {
-    fallback: true
+    fallback: true,
   },
   nitro: {
+    preset: 'netlify',
     prerender: {
       crawlLinks: true,
-      routes: [
-        '/',
-        '/404.html'
-      ]
+      routes: ['/', '/404.html'],
+    },
+    routeRules: {
+      '/**': {
+        headers: {
+          'Content-Security-Policy':
+            "frame-ancestors 'self' http://localhost:3333 https://*.sanity.studio",
+          'X-Frame-Options': 'ALLOWALL'
+        }
+      }
     }
-  }
+  },
 });

@@ -43,9 +43,7 @@ const props = defineProps({
 
 const typeString = '["' + props.types.join('","') + '"]';
 
-const countQuery = `count(*[_type in ${typeString}${
-  props.industry ? ` && industry->slug.current == "${props.industry}"` : ""
-}${props.role ? ` && role->slug.current == "${props.role}"` : ""}])`;
+const countQuery = `count(*[_type in ${typeString}])`;
 
 // const sanity = useSanity();
 // const { pending, data: count, error } = await useLazyAsyncData(route.fullPath, () => sanity.fetch(countQuery));

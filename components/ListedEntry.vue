@@ -1,129 +1,69 @@
 <template>
-  <nuxt-link :to="entry.path" class="listed-entry" :class="[{'listed-entry--small':small,'listed-entry--medium':medium,'listed-entry--large':large,'listed-entry--inline':inline, 'listed-entry--inline-md':inlineMd, 'listed-entry--inline-lg':inlineLg}]">
-    <figure class="listed-entry__visual">
-      
-    </figure>
-    <div class="listed-entry__caption">
-      
-    </div>
-  </nuxt-link>
+
+    <nuxt-link class="listed-entry" :to="$createPath(entry)">
+      <div class="listed-entry__card">
+        <figure class="listed-entry__media">
+          <sanity-img v-if="entry?.hero?.media?.length" class="listed-entry__image" :image="entry.hero.media[0].image" sizes="xxs:50vw md:33.33vw lg:33.33vw xl:25vw xxl:25vw"/>
+        </figure>
+        <div class="listed-entry__details">
+          <h3>{{entry.title}}</h3>
+          <p class="small">{{entry.summary}}</p>
+        </div>
+      </div>
+    </nuxt-link>
 </template>
 
-
 <script setup>
-  
-
   const props = defineProps({
-    entry:{type:Object, required:true},
-    inline:{type:Boolean},
-    inlineMd:{type:Boolean},
-    inlineLg:{type:Boolean},
-    small:{type:Boolean},
-    medium:{type:Boolean},
-    large:{type:Boolean},
-    hideSummary:{type:Boolean}
+    entry:{required:true,type:Array},
+    compact:{default:false,type:Boolean}
   })
-
 </script>
 
 
 <style lang="scss">
-
   .listed-entry {
     display:block;
     color:inherit;
-    &__visual {
-      margin-bottom:vr(1);
-      position:relative;
-      
-      aspect-ratio:16/9;
-      overflow: hidden;
-      &__logo {
-        position:absolute;
-        top:50%; left:50%; 
-        transform:translate(-50%,-50%);
-        width:50%; height:66.66%;
-        max-width:30rem;
-        display:block;
-        object-position: center;
-        object-fit: contain;
-        
-      }
-      &__image {
-        display:block;
-        width:100%;
-        object-fit: cover;
-        object-position: center;
-        & + .listed-entry__visual__logo {
-          filter:invert(100%);
-        }
-      }
-      
-    }
-    &__caption {
-      margin-bottom:vr(1);
-    }
-    &--inline {
-      display:flex;
-      .listed-entry__caption {
-        margin-left:vr(1);
-      }
-      .listed-entry__summary {
-        display:none;
-        @include breakpoint(md) {
-          display:block;
-        }
-      }
-      .listed-entry__visual {
-        aspect-ratio:none;
-        align-self:stretch;
-        flex:0 0 calc(var(--baseline) * 0.5 + 33.33333333%);
-        &__image {
-          height:100%;
-        }
-      }
-      // &.listed-entry--small {
-      //   .listed-entry {
-      //     &__visual {
-      //       flex:0 0 33.333333%;
-      //       align-self:stretch;
-      //       img {
-      //         height:100%;
-      //       }
-      //     }
-      //   }
-      // }
-    }
-    &--inline-md {
-      @include breakpoint(md) {
-        display:flex;
-        align-items:center;
-        .listed-entry {
-          &__caption {
-            margin-left:vr(1);
-          }
-            &__visual {
-              aspect-ratio:none;
-              flex:0 0 calc(var(--baseline) * 0.5 + 33.33333333%);
-              align-self:stretch;
-              &__image {
-                height:100%;
-              }
-            }
-          }
-        &.listed-entry--large {
-          .listed-entry {
-            &__visual {
-              aspect-ratio:none;
-              flex:0 0 50%;
-              @include breakpoint(lg) {
-                flex:0 0 calc(var(--baseline) * 0.5 + 66.66666667%);
-              }
-            }
-          }
-        }
-      }
-    }
+    margin-bottom:vr(1);
+    &__card {
 
+    }
+    hr {
+      height:vr(0.5);
+    }
+    p {
+      margin-bottom:vr(0.5);
+    }
+    &__media {
+      overflow: hidden;
+      aspect-ratio:5/3;
+      width:100%;
+      position: relative;
+      display:block;
+      margin-bottom:vr(0.5);
+      figcaption {
+        position: absolute;
+        top:0; left:0;
+        width:100%; height:100%;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        text-align:center;
+        z-index: 1;
+        background:rgba(0,0,0,0.3);
+        text-shadow: 0 0 0.75em black;
+        h2,h3,h4,h5 {
+          margin-bottom:0 !important;
+        }
+      }
+      img {
+        height:100%;
+        width:100%;
+        display:block;
+        object-fit: cover;
+      }
+    }
   }
 </style>

@@ -1,9 +1,6 @@
-:root {
-	--bg:#{$white};
-	--contrast:#{$black};
+:root, [data-theme="light"] { 
+	//--bg:#{$black};
+	//--contrast:#{$pink-light};
 
-}
 
-[data-theme="dark"] {
-	
 }
