@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     },
   },
   future: {
-    compatibilityVersion: 3
+    compatibilityVersion: 4
   },
   compatibilityDate: '2026-01-22',
 
@@ -32,8 +32,8 @@ export default defineNuxtConfig({
     "@nuxtjs/sanity", 
     "@nuxt/fonts",
     '@nuxt/image',
-    '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
+    // '@pinia/nuxt',
+    // '@pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/sitemap',
     '@nuxtjs/robots',

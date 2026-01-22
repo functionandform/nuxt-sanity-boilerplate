@@ -6,7 +6,7 @@
 
 <script setup>
 
-	import Link from '~/components/Link.vue'
+	import Link from './Link.vue'
 	const props = defineProps({
 		blocks: {
 			type:Array
@@ -20,6 +20,8 @@
 
 	const components = {
 			marks: {
+			// Custom marks handling
+			//internalLink: props => h('a', { href: props.value.href }, props.text)
 			link:props => h(Link, {
 			  ...props.value,
 			}),

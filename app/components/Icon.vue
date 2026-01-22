@@ -4,7 +4,7 @@
 
 
 <script setup>
-	import icons from '~/assets/iconography/icons.svg';
+	import icons from '../assets/iconography/icons.svg';
 	const props = defineProps({
 		name: {
 			required:true,
